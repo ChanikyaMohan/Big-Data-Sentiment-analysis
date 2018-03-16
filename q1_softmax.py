@@ -1,5 +1,5 @@
-import numpy as np
 import random
+import numpy as np
 
 def softmax(x):
     """
@@ -21,7 +21,17 @@ def softmax(x):
     """
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    dim = x.ndim
+    if dim > 1:
+        maxs_a = np.amax(x, axis=1)
+        maxs_a = maxs_a.reshape(maxs_a.shape[0], 1)
+        e = np.exp(x - maxs_a)
+        dist = e / np.sum(e, axis=1)
+    else:
+        e = np.exp(x)
+        dist = e / np.sum(e)
+    
+    return dist
     ### END YOUR CODE
     
     return x
