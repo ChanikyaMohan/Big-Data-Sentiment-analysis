@@ -59,7 +59,8 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     depth = predicted.shape[0]
     cost = -np.log(p[target])
     grad = delta.reshape((num,1)) * predicted.reshape((1,depth))
-    gradPred = (delta.reshape((1,num)).dot(outputVectors)).flatten()
+    rshp = (delta.reshape((1,num)).dot(outputVectors))
+    gradPred = rshp.flatten()
     ### END YOUR CODE
     
     return cost, gradPred, grad
@@ -115,7 +116,17 @@ def skipgram(currentWord, C, contextWords, tokens, inputVectors, outputVectors,
     # assignment!
 
     ### YOUR CODE HERE
-    raise NotImplementedError
+    cost = 0.0
+    gradIn = np.zeros(inputVectors.shape)
+    gradOut = np.zeros(outputVectors.shape)
+    j = tokens[currentWord]
+    pred = inputVectors[j]
+    for word in contextWords:
+	target = tokens[word]
+        J, gradPred, grad = word2vecCostAndGradient(pred, target, outputVectors, dataset)
+        cost += J
+        gradIn[j] += gradPred
+        gradOut += grad
     ### END YOUR CODE
     
     return cost, gradIn, gradOut
