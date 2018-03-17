@@ -10,7 +10,7 @@ def normalizeRows(x):
     # Implement a function that normalizes each row of a matrix to have unit length
     
     ### YOUR CODE HERE
-    raise NotImplementedError
+    x = x/np.linalg.norm(x, ord = 2, axis = 1, keepdims = True)+ 1e-30
     ### END YOUR CODE
     
     return x
@@ -50,7 +50,16 @@ def softmaxCostAndGradient(predicted, target, outputVectors, dataset):
     # assignment!                                                  
     
     ### YOUR CODE HERE
-    raise NotImplementedError
+    pred_dot = predicted.dot(outputVectors.T)
+    p = softmax(predicted.dot(pred_dot))
+    
+    delta = p
+    delta[target] = delta[target]-1
+    num = delta.shape[0]
+    depth = predicted.shape[0]
+    cost = -np.log(p[target])
+    grad = delta.reshape((num,1)) * predicted.reshape((1,depth))
+    gradPred = (delta.reshape((1,num)).dot(outputVectors)).flatten()
     ### END YOUR CODE
     
     return cost, gradPred, grad
@@ -73,7 +82,7 @@ def negSamplingCostAndGradient(predicted, target, outputVectors, dataset,
     # assignment!
     
     ### YOUR CODE HERE
-    raise NotImplementedError
+    
     ### END YOUR CODE
     
     return cost, gradPred, grad
